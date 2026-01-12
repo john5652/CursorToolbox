@@ -21,6 +21,7 @@ import userRoutes from './routes/user.routes';
 import pdfRoutes from './routes/pdf.routes';
 import exifRoutes from './routes/exif.routes';
 import nmapRoutes from './routes/nmap.routes';
+import virustotalRoutes from './routes/virustotal.routes';
 
 // Load environment variables from .env file
 // These are sensitive values like database URL, JWT secret, etc.
@@ -105,6 +106,13 @@ app.use('/api/exif', exifRoutes);
 // Nmap routes (protected)
 // POST /api/nmap/scan - Scan a host using nmap
 app.use('/api/nmap', nmapRoutes);
+
+// VirusTotal routes (protected)
+// POST /api/virustotal/analyze - Analyze hash, URL, or file (auto-detects type)
+// GET /api/virustotal/analyze/hash?hash={hash} - Analyze hash
+// POST /api/virustotal/analyze/url - Analyze URL
+// POST /api/virustotal/analyze/file - Analyze uploaded file
+app.use('/api/virustotal', virustotalRoutes);
 
 /**
  * START SERVER

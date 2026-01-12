@@ -138,6 +138,11 @@ This document lists all dependencies required for the mobile app and backend, al
 - **Installation**: `npm install multer@^1.4.5-lts.1`
 - **Why**: Handles multipart/form-data file uploads
 
+#### form-data (^4.0.5)
+- **Purpose**: Form data handling for HTTP requests
+- **Installation**: `npm install form-data@^4.0.5`
+- **Why**: Required for VirusTotal file uploads and other multipart/form-data requests
+
 ### PDF Conversion
 
 #### pdf-lib (^1.17.1)
@@ -180,6 +185,25 @@ This document lists all dependencies required for the mobile app and backend, al
 - **Why**: Core tool for network scanning, port scanning, and service detection. Used by the backend to perform network scans based on user requests.
 - **Important**: Must be installed on the server system where the backend runs. This is not an npm package.
 - **Note**: Nmap requires appropriate permissions to perform certain scan types. Some scans may require root/administrator privileges.
+
+### VirusTotal Malware Analysis
+
+#### form-data (^4.0.5)
+- **Purpose**: Form data handling for HTTP requests
+- **Installation**: `npm install form-data@^4.0.5`
+- **Why**: Required for uploading files to VirusTotal API
+
+#### VirusTotal API Key (Environment Variable)
+- **Purpose**: API key for VirusTotal malware analysis service
+- **Setup**: 
+  1. Sign up for a free account at [virustotal.com](https://www.virustotal.com)
+  2. Get your API key from the API section of your account
+  3. Add to backend `.env` file: `VIRUSTOTAL_API_KEY=your_key_here`
+- **Why**: Required for analyzing files, URLs, and hashes for malware
+- **Important**: 
+  - Free tier allows 4 requests per minute
+  - API key must be stored in backend `.env` file (never expose to mobile app)
+  - Never commit API keys to version control
 
 ### Utilities
 
@@ -282,3 +306,10 @@ npm install package-name@latest
    - On macOS/Linux: `which nmap` should show path
    - See BUILD_GUIDE.md for installation instructions
    - **Note**: Some nmap scan types require root/administrator privileges. Ensure the backend has appropriate permissions if needed.
+
+7. **VirusTotal API key not configured**
+   - Ensure `VIRUSTOTAL_API_KEY` is set in backend `.env` file
+   - Verify the API key is valid and active
+   - Check backend server logs for API key errors
+   - Free tier has rate limits (4 requests/minute) - wait if you hit the limit
+   - See BUILD_GUIDE.md for API key setup instructions

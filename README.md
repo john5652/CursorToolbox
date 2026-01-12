@@ -57,6 +57,7 @@ JWT_EXPIRES_IN="7d"
 PORT=5001
 NODE_ENV=development
 UPLOAD_DIR="./uploads"
+VIRUSTOTAL_API_KEY="your-virustotal-api-key-here"
 ```
 
 4. Generate Prisma client and run migrations:
@@ -138,6 +139,9 @@ npm start
 - ✅ File to PDF conversion (client-side and server-side)
 - ✅ Conversion history
 - ✅ PDF sharing and downloading
+- ✅ EXIF metadata extraction from files
+- ✅ Network scanning with Nmap
+- ✅ VirusTotal malware analysis (hash, URL, and file scanning)
 - ✅ Mobile-optimized UI
 - ✅ Cross-platform (iOS & Android)
 
@@ -185,6 +189,18 @@ This project is built in phases:
 - `GET /api/pdf/conversions` - Get user's conversion history (protected)
 - `GET /api/pdf/:id` - Download converted PDF (protected)
 - `DELETE /api/pdf/:id` - Delete conversion (protected)
+
+### EXIF Metadata Extraction
+- `POST /api/exif/extract` - Extract metadata from uploaded file (protected)
+
+### Network Scanning (Nmap)
+- `POST /api/nmap/scan` - Scan a host using nmap (protected)
+
+### VirusTotal Analysis
+- `POST /api/virustotal/analyze` - Analyze hash, URL, or file (auto-detects type) (protected)
+- `GET /api/virustotal/analyze/hash?hash={hash}` - Analyze file hash (protected)
+- `POST /api/virustotal/analyze/url` - Analyze URL (protected)
+- `POST /api/virustotal/analyze/file` - Analyze uploaded file (protected)
 
 ## Learning Concepts
 

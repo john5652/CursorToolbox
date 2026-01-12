@@ -35,6 +35,14 @@ This guide explains how to build the mobile app for production and prepare it fo
    - **Windows**: Download from [nmap.org](https://nmap.org/download.html) and add to PATH
    - **Note**: Nmap is a system dependency, not an npm package. It must be installed on the server system where the backend runs.
 
+6. **VirusTotal API Key** (for backend server)
+   - Required for VirusTotal malware analysis feature
+   - Sign up for a free account at [virustotal.com](https://www.virustotal.com)
+   - Get your API key from the API section of your account
+   - Add to backend `.env` file as `VIRUSTOTAL_API_KEY=your_key_here`
+   - **Note**: Free tier allows 4 requests per minute
+   - **Note**: The `form-data` npm package is required (installed automatically with `npm install`)
+
 ## Step 1: Configure App Metadata
 
 ### Update app.json
@@ -248,11 +256,12 @@ JWT_EXPIRES_IN="7d"
 PORT=5001
 NODE_ENV=production
 UPLOAD_DIR="./uploads"
+VIRUSTOTAL_API_KEY="your-virustotal-api-key"
 ```
 
 ### Install System Dependencies on Production Server
 
-**Important**: ExifTool and Nmap must be installed on your production server for the EXIF Viewer and Nmap Scanner features to work.
+**Important**: ExifTool and Nmap must be installed on your production server for the EXIF Viewer and Nmap Scanner features to work. VirusTotal API key must be configured in environment variables.
 
 - **Heroku**: Add buildpack or use Docker with dependencies pre-installed
 - **Railway**: Install via Dockerfile or use system package manager
@@ -261,6 +270,10 @@ UPLOAD_DIR="./uploads"
   ```dockerfile
   RUN apt-get update && apt-get install -y libimage-exiftool-perl nmap
   ```
+
+**Environment Variables for Production:**
+- Set `VIRUSTOTAL_API_KEY` in your production environment (Heroku config vars, Railway secrets, etc.)
+- Never commit API keys to version control
 
 ### Deploy Backend
 

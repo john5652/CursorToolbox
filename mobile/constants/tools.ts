@@ -38,5 +38,14 @@ export const TOOLS: Tool[] = [
     color: '#00ff00', // Green
     available: true,
   },
+  {
+    id: 'virustotal-scanner',
+    name: 'VirusTotal Scanner',
+    description: 'Analyze files, URLs, and hashes for malware',
+    icon: 'shield-checkmark',
+    route: '/(tabs)/virustotal-scanner',
+    color: '#00ff00', // Green
+    available: true,
+  },
   // Add more tools here as they're built
 ];

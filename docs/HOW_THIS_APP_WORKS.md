@@ -370,7 +370,73 @@ Mobile app displays formatted results
 
 ---
 
-### 7. Navigation
+### 7. VirusTotal Malware Analysis
+
+**How VirusTotal analysis works:**
+
+```
+User enters hash, URL, or uploads file
+    ↓
+Mobile app auto-detects input type
+    ↓
+Mobile app sends request to backend
+    ↓
+Backend validates input
+    ↓
+Backend calls VirusTotal API v3
+    ↓
+Backend processes VirusTotal response
+    ↓
+Backend returns formatted results
+    ↓
+Mobile app displays detection ratio and threat details
+```
+
+**Key files:**
+- `mobile/app/(tabs)/virustotal-scanner.tsx` - VirusTotal scanner screen
+- `mobile/services/virustotalAPI.ts` - API client for VirusTotal analysis
+- `backend/src/controllers/virustotal.controller.ts` - Server-side analysis logic
+- `backend/src/routes/virustotal.routes.ts` - VirusTotal API routes
+- `backend/src/middleware/virustotal-upload.middleware.ts` - File upload handling
+
+**Features:**
+- **Unified input field** that auto-detects:
+  - **Hash**: MD5 (32 chars), SHA-1 (40 chars), or SHA-256 (64 chars)
+  - **URL**: Starts with `http://` or `https://`
+  - **File**: File picker option
+- **Hash Analysis**: Lookup existing file analysis by hash
+- **URL Analysis**: Submit URL and retrieve analysis results
+- **File Analysis**: Upload file for malware scanning
+- Displays detection ratio, threat details, and file metadata
+- Real-time type detection with visual indicators
+
+**Analysis Types:**
+- **Hash Lookup**: Instant results if file was previously analyzed
+- **URL Submission**: Submit URL, then retrieve analysis (may be queued)
+- **File Upload**: Upload file, wait for analysis, retrieve results
+
+**Security considerations:**
+- Input sanitization for all user inputs
+- Rate limiting awareness (VirusTotal free tier: 4 req/min)
+- File size limits (32MB max for VirusTotal free tier)
+- Timeout protection for external API calls
+- API key stored server-side only (never exposed to mobile app)
+
+**Dependencies:**
+- **form-data**: npm package for file uploads to VirusTotal API
+- **VirusTotal API Key**: Environment variable in backend `.env`
+
+**API Endpoints:**
+- `POST /api/virustotal/analyze` - Unified endpoint (auto-detects type)
+- `GET /api/virustotal/analyze/hash?hash={hash}` - Analyze hash
+- `POST /api/virustotal/analyze/url` - Analyze URL
+- `POST /api/virustotal/analyze/file` - Analyze uploaded file
+
+**Note**: VirusTotal API key must be configured in backend `.env` file. See BUILD_GUIDE.md for setup instructions. Free tier has rate limits (4 requests per minute).
+
+---
+
+### 8. Navigation
 
 **How navigation works:**
 
@@ -398,7 +464,7 @@ app/
 
 ---
 
-### 7. State Management
+### 9. State Management
 
 **How state is managed:**
 
@@ -425,7 +491,7 @@ The app uses **React Context API** for global state:
 
 ---
 
-### 8. API Communication
+### 10. API Communication
 
 **How the app talks to the backend:**
 
@@ -472,6 +538,15 @@ axios.post('/api/auth/login', { email, password })
 
 ### EXIF Metadata Extraction
 - `POST /api/exif/extract` - Extract metadata from uploaded file (requires auth)
+
+### Network Scanning (Nmap)
+- `POST /api/nmap/scan` - Scan a host using nmap (requires auth)
+
+### VirusTotal Analysis
+- `POST /api/virustotal/analyze` - Analyze hash, URL, or file (auto-detects type) (requires auth)
+- `GET /api/virustotal/analyze/hash?hash={hash}` - Analyze file hash (requires auth)
+- `POST /api/virustotal/analyze/url` - Analyze URL (requires auth)
+- `POST /api/virustotal/analyze/file` - Analyze uploaded file (requires auth)
 
 ### Health Check
 - `GET /api/health` - Check if server is running
@@ -601,9 +676,13 @@ This app demonstrates:
 - ✅ User authentication with JWT
 - ✅ File upload and processing
 - ✅ PDF generation (client and server-side)
+- ✅ EXIF metadata extraction
+- ✅ Network scanning with Nmap
+- ✅ VirusTotal malware analysis (hash, URL, file)
 - ✅ State management with Context API
 - ✅ RESTful API design
 - ✅ Secure password storage
 - ✅ Mobile-first UI design
+- ✅ Integration with external APIs
 
 Happy coding! 🚀
